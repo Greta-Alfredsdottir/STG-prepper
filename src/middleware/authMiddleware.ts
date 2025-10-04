@@ -71,7 +71,10 @@ export const Authorize = async (req: Request, res: Response, next: NextFunction)
         req.user = { id: user.id };
 
         // Send nyt token tilbage til klienten
-        res.status(200).json({ accessToken: newAccessToken });
+        res.status(401).json({ 
+          message: `Refresh token expired`,
+          accessToken: newAccessToken 
+        });
         return;
 
       } catch (err) {

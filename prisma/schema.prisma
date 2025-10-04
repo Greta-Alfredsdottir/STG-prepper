@@ -14,35 +14,64 @@ datasource db {
 }
 
 model User {
-  id           Int     @id @default(autoincrement()) // -> Primary Key med auto optælling
-  firstname    String  @default("Ikke navngivet")
-  lastname     String  @default("Ikke navngivet")
-  email        String  @unique // -> Unik værdi
+  id           Int      @id @default(autoincrement()) // -> Primary Key med auto optælling
+  firstname    String   @default("Ikke navngivet")
+  lastname     String   @default("Ikke navngivet")
+  email        String   @unique // -> Unik værdi
   password     String
-  description  String? @db.Text // -> Lang tekst
-  image        String
+  description  String?  @db.Text // -> Lang tekst
+  imageUrl     String
   refreshToken String
-  isActive     Boolean @default(true) // -> Bool med default true
+  isActive     Boolean  @default(true) // -> Bool med default true
+  createdAt    DateTime @default(now()) // -> Datotid
 
-  favorites Favorite[] // -> Mange til een relation 
-  reviews   Review[]
+  carts   Cart[]
+  reviews Review[]
+  orders  Order[]
 
   @@map("users") // -> Navn på tabel
+}
+
+model Category {
+  id          Int    @id @default(autoincrement())
+  title       String
+  slug        String
+  description String @db.Text
+
+  products Product[]
+
+  @@map("categories")
+}
+
+model Brand {
+  id       Int    @id @default(autoincrement())
+  title    String
+  imageUrl String
+
+  products Product[]
+
+  @@map("brands")
 }
 
 model Product {
   id          Int      @id @default(autoincrement())
   name        String
   slug        String
-  image       String
+  imageUrl    String
+  teaser      String?  
   description String?  @db.Text // -> Lang tekst
   price       Decimal  @db.Decimal(10, 2) // -> Decimaltal til pris
   stock       Int
+  categoryId  Int
+  brandId     Int
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now()) // -> Datotid
 
-  favorites Favorite[]
-  reviews   Review[]
+  category   Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  brand      Brand       @relation(fields: [brandId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  carts      Cart[]
+  reviews    Review[]
+  orderlines Orderline[]
 
   @@map("products")
 }
@@ -64,13 +93,42 @@ model Review {
   @@map("reviews")
 }
 
-model Favorite {
-  id        Int @id @default(autoincrement())
+model Cart {
+  id        Int      @id @default(autoincrement())
   userId    Int
   productId Int
+  quantity  Int      @default(0)
+  createdAt DateTime @default(now()) // -> Datotid
 
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade) // -> Een til mange relation
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade) // -> Een til mange relation
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@map("favorites")
+  @@map("carts")
+}
+
+model Order {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  totalPrice Int
+  status     Int
+  createdAt  DateTime @default(now()) // -> Datotid
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade) // -> Een til mange relation
+  orderlines Orderline[]
+
+  @@map("orders")
+}
+
+model Orderline {
+  id        Int      @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int
+  price     Int
+  createdAt DateTime @default(now()) // -> Datotid
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade) // -> Een til mange relation
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade) // -> Een til mange relation
+
+  @@map("orderlines")
 }
