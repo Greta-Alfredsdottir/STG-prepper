@@ -34,8 +34,6 @@ I .env fil er der er en DATABASE variabel med en connection string, som er en ur
 ```bash
 DATABASE_URL="mysql://username:@hostname:portnumber/databasename"
 ```
-*Husk også at fjerne klammerne ([]).*
-
 ### 3.1 Initialiser database med fulde rettigheder
 Denne kommando kører med Prisma Migrate og kræver at du har fuld rettighed til din MySQL database. Dette kan typisk bruges hvis du kører med en lokal database.
 
