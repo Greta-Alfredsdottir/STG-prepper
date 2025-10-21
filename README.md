@@ -49,7 +49,7 @@ Denne kommando:
 ### 3.2 Initialiser database med begrænsede rettigheder
 Hvis du kun har rettigheder til at administrere tabeller skal du bruge følgende kommando for at oprette tabeller og data.
 
-Denne model skal typisk bruges hvis du kører med en online database.
+Denne model skal typisk bruges hvis du kører med en online database - som eksempelvis via selfservice.
 ```bash
 npm run push
 ```
