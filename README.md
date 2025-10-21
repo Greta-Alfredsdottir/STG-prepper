@@ -32,7 +32,7 @@ cp .env.example .env
 ### 3. Indsæt dine database oplysninger
 I .env fil er der er en DATABASE variabel med en connection string, som er en url. Udskift de enkelte elementer i denne med dine egne oplysninger.
 ```bash
-DATABASE_URL="mysql://[dbuser]:[dbpassword]@[dbhost]:[dbport]/[dbname]"
+DATABASE_URL="mysql://username:@hostname:portnumber/databasename"
 ```
 *Husk også at fjerne klammerne ([]).*
 
