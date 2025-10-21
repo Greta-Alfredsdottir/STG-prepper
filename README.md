@@ -20,8 +20,8 @@ Et starterprojekt med **Node.js**, **TypeScript**, **Express 5**, og **Prisma OR
 ### 1. Klon repo og installér afhængigheder
 
 ```bash
-git clone https://github.com/dit-brugernavn/api-template.git
-cd api-template
+git clone https://github.com/Webudvikler-TechCollege/sgtprepper-api-ts-prisma
+cd sgtprepper-api-ts-prisma
 npm install
 ```
 ### 2. Opret .env-fil ud fra det vedlagte eksempel
